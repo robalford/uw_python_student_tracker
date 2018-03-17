@@ -139,6 +139,8 @@ INSTALLED_APPS = [
 
     # project
     "student_tracking",
+    "students",
+    "tracker",
 ]
 
 ADMIN_URL = "admin:index"
