@@ -6,6 +6,17 @@ class Student(models.Model):
     enrollment_email = models.EmailField()
     enrollment_date = models.DateField()
     course_end_date = models.DateField()
+    ACTIVE = 'A'
+    DROPPED_COURSE = 'D'
+    PASSED_COURSE = 'P'
+    FAILED_COURSE = 'F'
+    STATUS_CHOICES = (
+        (ACTIVE, 'Active'),
+        (DROPPED_COURSE, 'Dropped'),
+        (PASSED_COURSE, 'Passed course'),
+        (FAILED_COURSE, 'Failed course'),
+    )
+    enrollment_status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=ACTIVE)
     edx_id = models.IntegerField()
     edx_email = models.EmailField()
     edx_username = models.CharField(max_length=50)
@@ -26,3 +37,5 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
+
+
