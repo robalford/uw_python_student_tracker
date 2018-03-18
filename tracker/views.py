@@ -76,7 +76,7 @@ def send_welcome_email(request, student_pk):
     return render(request, template_name='tracker/welcome_email.html', context=context)
 
 
-def send_one_week_check_in(request):
+def send_one_week_check_in(request, student_pk):
     student = get_object_or_404(Student, pk=student_pk)
     context = {'student': student}
     return render(request, template_name='tracker/one_week_email.html', context=context)
