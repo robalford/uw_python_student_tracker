@@ -136,6 +136,7 @@ INSTALLED_APPS = [
     "account",
     "pinax.eventlog",
     "pinax.webanalytics",
+    "bootstrap3",
 
     # project
     "student_tracking",

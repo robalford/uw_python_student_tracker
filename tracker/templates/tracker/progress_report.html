@@ -1,0 +1,86 @@
+{% extends "site_base.html" %}{% load bootstrap3 %}
+{% block body %}
+    <h1>Student Progress Report</h1>
+    <p>{{ percent_ahead_or_on_pace|floatformat }}% of students on pace to finish the course on time.</p>
+    <p>{{ percent_behind|floatformat }}% of students behind schedule to complete course.</p>
+    <p>{{ percent_no_progress|floatformat }}% of students show no progress in the course.</p>
+
+    <h2>Ahead of schedule</h2>
+    <hr>
+    {% for student in students_ahead %}
+        <p>
+        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
+        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
+        </p>
+    {% endfor %}
+
+    <h2>On pace</h2>
+    <hr>
+
+    {% for student in students_on_pace %}
+        <p>
+        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
+        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
+        </p>
+    {% endfor %}
+
+    <h2>Behind</h2>
+    <hr>
+
+    {% for student in students_behind %}
+        <p>
+        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
+        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
+        </p>
+    {% endfor %}
+
+    <h2>No progress</h2>
+    <hr>
+
+    {% for student in students_no_progress %}
+        <p>
+        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
+        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
+        </p>
+    {% endfor %}
+
+    <h2>Send welcome email</h2>
+    <hr>
+    {% if send_welcome_email %}
+        <ul>
+        {% for student in send_welcome_email %}
+            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Send one week check in</h2>
+    <hr>
+    {% if send_week1_email %}
+        <ul>
+        {% for student in send_week1_email %}
+            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Send one month email</h2>
+    <hr>
+    {% if send_month1_email %}
+        <ul>
+        {% for student in send_month1_email %}
+            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Send two month email</h2>
+    <hr>
+    {% if send_month2_email %}
+        <ul>
+        {% for student in send_month2_email %}
+            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

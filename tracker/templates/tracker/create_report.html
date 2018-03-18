@@ -1,0 +1,10 @@
+{% extends "site_base.html" %}{% load bootstrap3 %}
+{% block body %}
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form student_tracker_form %}
+        <button type="submit" class="btn btn-primary">
+            Continue
+        </button>
+    </form>
+{% endblock %}
