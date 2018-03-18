@@ -90,7 +90,7 @@ class Student(models.Model):
             self.progress_status = Student.NO_PROGRESS
         elif (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) <= -5:
             self.progress_status = Student.AHEAD
-        elif 15 >= (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) > -15:
+        elif 15 >= (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) > -5:
             self.progress_status = Student.ON_PACE
         else:
             self.progress_status = Student.BEHIND

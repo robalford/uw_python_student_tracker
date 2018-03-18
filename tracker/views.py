@@ -41,7 +41,7 @@ def student_progress_report(request, pk):
     send_month2_email = []
     send_month3_email = []
     for student in all_students:
-        if student.days_since_enrollment > 7 and student.completed_lessons == 0 and not student.month1_email_sent:
+        if student.days_since_enrollment > 7 and student.num_completed_lessons == 0 and not student.month1_email_sent:
             send_week1_email.append(student)
         if student.days_since_enrollment > 30 and not student.month1_email_sent:
             send_month1_email.append(student)
