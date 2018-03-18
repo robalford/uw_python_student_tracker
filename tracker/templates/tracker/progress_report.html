@@ -49,7 +49,7 @@
     {% if send_welcome_email %}
         <ul>
         {% for student in send_welcome_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
         {% endfor %}
         </ul>
     {% endif %}
@@ -59,7 +59,7 @@
     {% if send_week1_email %}
         <ul>
         {% for student in send_week1_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
         {% endfor %}
         </ul>
     {% endif %}
@@ -69,7 +69,7 @@
     {% if send_month1_email %}
         <ul>
         {% for student in send_month1_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
         {% endfor %}
         </ul>
     {% endif %}
@@ -79,7 +79,7 @@
     {% if send_month2_email %}
         <ul>
         {% for student in send_month2_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }}</li>
+            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
         {% endfor %}
         </ul>
     {% endif %}

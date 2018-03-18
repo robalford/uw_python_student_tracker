@@ -30,25 +30,27 @@ def student_progress_report(request, pk):
                               key=lambda s: s.num_completed_lessons, reverse=True)
     students_behind = sorted(all_students.filter(progress_status=Student.BEHIND),
                              key=lambda s: s.num_completed_lessons, reverse=True)
-    students_no_progress = all_students.filter(progress_status=Student.NO_PROGRESS)
+    students_no_progress = [student for student in all_students if not student.started_lessons]
+    student_no_completed_assignments = [student for student in all_students if not student.completed_lessons]
     number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
     percent_ahead_or_on_pace = ((len(students_ahead) + len(students_on_pace)) / number_active_students) * 100
     percent_behind = (len(students_behind) / number_active_students) * 100
     percent_no_progress = (len(students_no_progress) / number_active_students) * 100
+    percent_no_completed = (len(student_no_completed_assignments) / number_active_students) * 100
     send_welcome_email = all_students.filter(welcome_email_sent=False)
     send_week1_email = []
     send_month1_email = []
     send_month2_email = []
     send_month3_email = []
     for student in all_students:
-        if student.days_since_enrollment > 7 and student.num_completed_lessons == 0 and not student.month1_email_sent:
-            send_week1_email.append(student)
-        if student.days_since_enrollment > 30 and not student.month1_email_sent:
-            send_month1_email.append(student)
-        if student.days_since_enrollment > 60 and not student.month2_email_sent:
-            send_month2_email.append(student)
         if student.days_since_enrollment > 90 and not student.month3_email_sent:
             send_month3_email.append(student)
+        elif student.days_since_enrollment > 60 and not student.month2_email_sent:
+            send_month2_email.append(student)
+        elif student.days_since_enrollment >= 30 and not student.month1_email_sent:
+            send_month1_email.append(student)
+        elif student.days_since_enrollment > 7 and student in student_no_completed_assignments and not student.month1_email_sent:
+            send_week1_email.append(student)
     context = {
         'students_ahead': students_ahead,
         'students_on_pace': students_on_pace,
@@ -58,6 +60,7 @@ def student_progress_report(request, pk):
         'percent_ahead_or_on_pace': percent_ahead_or_on_pace,
         'percent_behind': percent_behind,
         'percent_no_progress': percent_no_progress,
+        'percent_no_completed': percent_no_completed,
         'send_welcome_email': send_welcome_email,
         'send_week1_email': send_week1_email,
         'send_month1_email': send_month1_email,

@@ -35,11 +35,11 @@ class Student(models.Model):
     ON_PACE = 'O'
     AHEAD = 'A'
     NO_PROGRESS = 'N'
+    NO_COMPLETED = 'NC'
     PROGRESS_STATUS_CHOICES = (
         (BEHIND, 'Behind schedule'),
         (ON_PACE, 'On pace'),
         (AHEAD, 'Ahead of schedule'),
-        (NO_PROGRESS, 'No progress'),
     )
     progress_status = models.CharField(max_length=1, choices=PROGRESS_STATUS_CHOICES, default=NO_PROGRESS)
     welcome_email_sent = models.BooleanField(default=False)
@@ -70,6 +70,14 @@ class Student(models.Model):
         return [field for field in self.grade_score_fields() if getattr(self, field) == 1.0]
 
     @property
+    def started_lessons(self):
+        return [
+            field for field in self.grade_score_fields()
+            if getattr(self, field) != 'Not Attempted'
+            or getattr(self, field) != '0.0'
+        ]
+
+    @property
     def num_completed_lessons(self):
         return len(self.completed_lessons)
 
@@ -86,9 +94,7 @@ class Student(models.Model):
         return (self.days_since_enrollment / 120) * 100
 
     def update_progress_status(self):
-        if not self.completed_lessons:
-            self.progress_status = Student.NO_PROGRESS
-        elif (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) <= -5:
+        if (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) <= -5:
             self.progress_status = Student.AHEAD
         elif 15 >= (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) > -5:
             self.progress_status = Student.ON_PACE
