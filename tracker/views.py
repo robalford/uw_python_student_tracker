@@ -23,7 +23,7 @@ def create_report(request):
 def student_progress_report(request, pk):
     student_tracker = get_object_or_404(StudentTracker, pk=pk)
     student_tracker.update_student_progress()
-    all_students = Student.objects.all()
+    all_students = Student.objects.filter(enrollment_status=Student.ACTIVE)
     students_ahead = sorted(all_students.filter(progress_status=Student.AHEAD),
                             key=lambda s: s.num_completed_lessons, reverse=True)
     students_on_pace = sorted(all_students.filter(progress_status=Student.ON_PACE),
@@ -49,7 +49,7 @@ def student_progress_report(request, pk):
             send_month2_email.append(student)
         elif student.days_since_enrollment >= 30 and not student.month1_email_sent:
             send_month1_email.append(student)
-        elif student.days_since_enrollment > 7 and student in student_no_completed_assignments and not student.month1_email_sent:
+        elif student.days_since_enrollment > 7 and student in students_no_progress and not student.month1_email_sent:
             send_week1_email.append(student)
     context = {
         'students_ahead': students_ahead,

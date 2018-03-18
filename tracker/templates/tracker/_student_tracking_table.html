@@ -1,0 +1,14 @@
+<table class="table">
+<tr>
+    <th>Student</th>
+    <th>Completed Lessons</th>
+    <th>Enrollment period</th>
+</tr>
+{% for student in students %}
+<tr>
+    <td>{{ student.name }}</td>
+    <td>{{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9)</td>
+    <td>{{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days)</td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,5 @@
+<ul>
+{% for student in students %}
+    <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
+{% endfor %}
+</ul>

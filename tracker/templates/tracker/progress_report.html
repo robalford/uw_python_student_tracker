@@ -4,83 +4,52 @@
     <p>{{ percent_ahead_or_on_pace|floatformat }}% of students on pace to finish the course on time.</p>
     <p>{{ percent_behind|floatformat }}% of students behind schedule to complete course.</p>
     <p>{{ percent_no_progress|floatformat }}% of students show no progress in the course.</p>
-
+    <br><br>
+    {% if students_ahead %}
     <h2>Ahead of schedule</h2>
-    <hr>
-    {% for student in students_ahead %}
-        <p>
-        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
-        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
-        </p>
-    {% endfor %}
-
+    {% include 'tracker/_student_tracking_table.html' with students=students_ahead %}
+    {% endif %}
+    {% if students_on_pace %}
     <h2>On pace</h2>
-    <hr>
-
-    {% for student in students_on_pace %}
-        <p>
-        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
-        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
-        </p>
-    {% endfor %}
-
+    {% include 'tracker/_student_tracking_table.html' with students=students_on_pace %}
+    {% endif %}
+    {% if students_behind %}
     <h2>Behind</h2>
-    <hr>
-
-    {% for student in students_behind %}
-        <p>
-        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
-        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
-        </p>
-    {% endfor %}
-
+    {% include 'tracker/_student_tracking_table.html' with students=students_behind %}
+    {% endif %}
+    {% if students_no_progress %}
     <h2>No progress</h2>
-    <hr>
+    {% include 'tracker/_student_tracking_table.html' with students=students_no_pogress %}
+    {% endif %}
+    <br><br>
 
-    {% for student in students_no_progress %}
-        <p>
-        {{ student.name }} has completed {{ student.percent_assignments_completed|floatformat }}% ({{ student.num_completed_lessons }}/9) of the assignments in
-        {{ student.percent_of_enrollment_period_completed|floatformat }}% ({{ student.days_since_enrollment }}/120 days) of the enrollment period.
-        </p>
-    {% endfor %}
-
+    {% if send_welcome_email %}
     <h2>Send welcome email</h2>
     <hr>
-    {% if send_welcome_email %}
-        <ul>
-        {% for student in send_welcome_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
-        {% endfor %}
-        </ul>
+    {% include 'tracker/_student_email_list.html' with students=send_welcome_email %}
     {% endif %}
 
+    {% if send_week1_email %}
     <h2>Send one week check in</h2>
     <hr>
-    {% if send_week1_email %}
-        <ul>
-        {% for student in send_week1_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
-        {% endfor %}
-        </ul>
+    {% include 'tracker/_student_email_list.html' with students=send_week1_email %}
     {% endif %}
 
+    {% if send_month1_email %}
     <h2>Send one month email</h2>
     <hr>
-    {% if send_month1_email %}
-        <ul>
-        {% for student in send_month1_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
-        {% endfor %}
-        </ul>
+    {% include 'tracker/_student_email_list.html' with students=send_month1_email %}
     {% endif %}
 
+    {% if send_month2_email %}
     <h2>Send two month email</h2>
     <hr>
-    {% if send_month2_email %}
-        <ul>
-        {% for student in send_month2_email %}
-            <li>{{ student.name }}: {{ student.enrollment_email }} {{ student.num_completed_lessons }} in {{ student.days_since_enrollment }} days</li>
-        {% endfor %}
-        </ul>
+    {% include 'tracker/_student_email_list.html' with students=send_month2_email %}
+    {% endif %}
+
+    {% if send_month3_email %}
+    <h2>Send three month email</h2>
+    <hr>
+    {% include 'tracker/_student_email_list.html' with students=send_month3_email %}
     {% endif %}
 {% endblock %}
