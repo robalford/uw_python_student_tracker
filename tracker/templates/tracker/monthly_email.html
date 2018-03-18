@@ -1,0 +1,38 @@
+{% extends "site_base.html" %}
+{% block body %}
+<h2>{{ month_completed }} month check in</h2>
+
+<p>Progress status: completed {{ student.num_completed_lessons }}/10 lessons in {{ student.days_since_enrollment }}/120 days</p>
+
+<p>Send to: {{ student.enrollment_email }}</p>
+
+<p>Subject: Checking in</p>
+
+<p>Dear {{ student }},</p>
+
+<p>
+If you can believe it, {{ month_completed }} month{% if not month_completed == '1' %}s have{% else %} has{% endif %} already gone by
+since you enrolled in the Python Programming certificate. We want to
+make sure that you are successful in this course. One of the keys to success is pacing yourself through the course
+content, so you have plenty of time to complete your coursework.
+</p>
+<p>
+At this point, you should be finished with Lesson {{ lesson_number }} to stay on track. Remember, you have 4 months from your first login
+to complete the course.
+</p>
+<p>
+According to our records, {% if on_pace_to_finish %}you have completed Lesson {{ lesson_number }} so you're off to a good start {% else %}
+you still have work left to do on Lesson {{ lesson_number }}, so you have some catching up to do{% endif %}. Let us know if there's anything we can
+do to further assist you as you progress through the course.
+</p>
+
+<p>
+Best,
+<br><br>
+Instructional Team / in PYTHON PROGRAMMING
+<br><br>
+UW Tower, Box 359491
+<br><br>
+4333 Brooklyn Ave NE Seattle, WA
+</p>
+{% endblock %}

@@ -34,14 +34,12 @@ class Student(models.Model):
     BEHIND = 'B'
     ON_PACE = 'O'
     AHEAD = 'A'
-    NO_PROGRESS = 'N'
-    NO_COMPLETED = 'NC'
     PROGRESS_STATUS_CHOICES = (
         (BEHIND, 'Behind schedule'),
         (ON_PACE, 'On pace'),
         (AHEAD, 'Ahead of schedule'),
     )
-    progress_status = models.CharField(max_length=1, choices=PROGRESS_STATUS_CHOICES, default=NO_PROGRESS)
+    progress_status = models.CharField(max_length=1, choices=PROGRESS_STATUS_CHOICES, default=BEHIND)
     welcome_email_sent = models.BooleanField(default=False)
     week1_email_sent = models.BooleanField(default=False)
     month1_email_sent = models.BooleanField(default=False)

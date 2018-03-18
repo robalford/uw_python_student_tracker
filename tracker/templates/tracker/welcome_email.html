@@ -1,0 +1,61 @@
+{% extends "site_base.html" %}
+{% block body %}
+<h2>Welcome email</h2>
+
+<p>Send to: {{ student.enrollment_email }}</p>
+
+<p>Subject: Welcome to the Certificate in Python Programming!</p>
+
+<p>Dear {{ student }},</p>
+
+<p>
+Welcome to the Certificate in Python Programming and the Programming in Python course! My name is Rob and I am the
+instructional assistant for this course. I’d also like to introduce you to Natasha, the lead instructor for the course.
+We are excited that you’ve enrolled in this program and our goal is to provide you with an outstanding learning experience.
+</p>
+<p>
+As you know, this course is self-paced. Working mostly on your own can sometimes be a challenge, but many students
+have successfully figured out how to work this way, and we trust that you can as well. A key part of doing this is
+to keep careful track of where you are in the course, what remains to be done, and what you can reasonably expect to
+complete in a given period of time.  That being said, it’s often helpful to monitor your progress regularly so you can
+be sure you’ll finish the course within four months. It’s also often useful to decide in advance that you’ll work on
+the course at a particular time of the day or week – even if you have to vary from that, setting a schedule for yourself
+can promote progress.
+</p>
+<p>
+Now that you have registered and paid for the course your four month timeline has begun. The course is already open and
+ready for you. If you’ve already completed the Introduction, that’s great – you’re on your way. If you haven’t, try to
+log into the <a href="https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Winter/">course</a> within
+the next few days, finish the Introduction and move ahead into <a href="https://startlearning.uw.edu/courses/course-v1:UW+PYTHON210+2018_Winter/courseware/8a91080843cf492e98ba0d24fa52c35c/55153960c1244a69bbd5f8442f20d994/">
+Lesson 1</a>. If you run into any roadblocks please let me know as soon as possible. The most important thing is to
+keep your momentum going.
+</p>
+<p>
+You will submit your homework assignments for the course through the class <a href="https://github.com/UWPCE-PythonCert-ClassRepos/Self_Paced-Online">
+GitHub repository</a>. Detailed instructions for this process are included in the course materials for Lesson 1.
+</p>
+<p>
+You are also invited to join our <a href="https://na-python-cert.slack.com/messages/D8JTNC7CH/">Slack workspace</a> for
+the course where you can communicate with your instructor and fellow students, post questions about assignments and form
+discussions groups on class-related topics.
+</p>
+<p>
+We have created some initial <a href="https://get.slack.help/hc/en-us/articles/205239967-Browse-and-join-channels">Slack channels</a>
+for you that map to each lesson in the course. You can find those channels
+by clicking the Channels section header in the left sidebar of the Slack workspace, or by searching for 'lesson1',
+'lesson2' etc. Post all your general questions related to the lessons there.
+</p>
+<p>
+Check out this <a href="https://get.slack.help/hc/en-us/articles/218080037-Getting-started-for-new-members">reference guide</a>
+if you're new to Slack.
+</p>
+<p>
+As you get started, we want you to know that we are here to support your learning. Please do not hesitate to reach out
+to me or your instructor through this email address (python1@uw.edu), or through the course discussion boards or on Slack.
+</p>
+<p>
+Best,
+<br><br>
+Rob Alford
+</p>
+{% endblock %}

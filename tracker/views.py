@@ -68,3 +68,32 @@ def student_progress_report(request, pk):
         'send_month3_email': send_month3_email,
     }
     return render(request, template_name='tracker/progress_report.html', context=context)
+
+
+def send_welcome_email(request, student_pk):
+    student = get_object_or_404(Student, pk=student_pk)
+    context = {'student': student}
+    return render(request, template_name='tracker/welcome_email.html', context=context)
+
+
+def send_one_week_check_in(request):
+    student = get_object_or_404(Student, pk=student_pk)
+    context = {'student': student}
+    return render(request, template_name='tracker/one_week_email.html', context=context)
+
+
+def send_monthly_checkin(request, student_pk, month_completed):
+    student = get_object_or_404(Student, pk=student_pk)
+    context = {
+        'student': student,
+        'month_completed': month_completed,
+    }
+    finish_lesson_by_month = (('3', '1'), ('5', '2'), ('8', '3'))
+    for lesson, month in finish_lesson_by_month:
+        if str(month_completed) == month:
+            if getattr(student, 'lesson{}_score'.format(lesson)) != '1.0':
+                context['on_pace_to_finish'] = False
+            else:
+                context['on_pace_to_finish'] = True
+            context['lesson_number'] = lesson
+    return render(request, template_name='tracker/monthly_email.html', context=context)

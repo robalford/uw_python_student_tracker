@@ -26,30 +26,55 @@
     {% if send_welcome_email %}
     <h2>Send welcome email</h2>
     <hr>
-    {% include 'tracker/_student_email_list.html' with students=send_welcome_email %}
+    <ul>
+    {% for student in send_welcome_email %}
+    {% url 'welcome_email' student.id as welcome_email_url %}
+    {% include 'tracker/_student_email_list.html' with url=welcome_email_url %}
+    {% endfor %}
+    </ul>
     {% endif %}
 
     {% if send_week1_email %}
     <h2>Send one week check in</h2>
     <hr>
-    {% include 'tracker/_student_email_list.html' with students=send_week1_email %}
+    <ul>
+    {% for student in send_week1_email %}
+    {% url 'welcome_email' student.id as week_one_email_url %}
+    {% include 'tracker/_student_email_list.html' with url=week_one_email_url %}
+    {% endfor %}
+    </ul>
     {% endif %}
 
     {% if send_month1_email %}
     <h2>Send one month email</h2>
     <hr>
-    {% include 'tracker/_student_email_list.html' with students=send_month1_email %}
+    <ul>
+    {% for student in send_month1_email %}
+    {% url 'monthly_email' student_pk=student.id month_completed=1 as month1_email_url %}
+    {% include 'tracker/_student_email_list.html' with url=month1_email_url %}
+    {% endfor %}
+    </ul>
     {% endif %}
 
     {% if send_month2_email %}
     <h2>Send two month email</h2>
     <hr>
-    {% include 'tracker/_student_email_list.html' with students=send_month2_email %}
+    <ul>
+    {% for student in send_month2_email %}
+    {% url 'monthly_email' student_pk=student.id month_completed=2 as month2_email_url %}
+    {% include 'tracker/_student_email_list.html' with url=month2_email_url %}
+    {% endfor %}
+    </ul>
     {% endif %}
 
     {% if send_month3_email %}
     <h2>Send three month email</h2>
     <hr>
-    {% include 'tracker/_student_email_list.html' with students=send_month3_email %}
+    <ul>
+    {% for student in send_month3_email %}
+    {% url 'monthly_email' student_pk=student.id month_completed=3 as month3_email_url %}
+    {% include 'tracker/_student_email_list.html' with url=month3_email_url %}
+    {% endfor %}
+    </ul>
     {% endif %}
 {% endblock %}

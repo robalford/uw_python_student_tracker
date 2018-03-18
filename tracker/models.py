@@ -26,7 +26,7 @@ class StudentTracker(models.Model):
     @staticmethod
     def format_date_from_spreadsheet(date):
         split_date = date.split('/')
-        return datetime.datetime(int('20' + split_date[2]), int(split_date[0]), int(split_date[1]))
+        return datetime.date(int('20' + split_date[2]), int(split_date[0]), int(split_date[1]))
     
     @staticmethod
     def convert_score_to_decimal(score):
