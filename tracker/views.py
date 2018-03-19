@@ -91,7 +91,7 @@ def send_monthly_checkin(request, student_pk, month_completed):
     finish_lesson_by_month = (('3', '1'), ('5', '2'), ('8', '3'))
     for lesson, month in finish_lesson_by_month:
         if str(month_completed) == month:
-            if getattr(student, 'lesson{}_score'.format(lesson)) != '1.0':
+            if getattr(student, 'lesson{}_score'.format(lesson)) != 1.0:
                 context['on_pace_to_finish'] = False
             else:
                 context['on_pace_to_finish'] = True
