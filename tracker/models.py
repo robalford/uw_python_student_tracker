@@ -53,9 +53,12 @@ class StudentTracker(models.Model):
                 student.week1_email_sent = True
             if '1 month check in' in student_data['Notes']:
                 student.month1_email_sent = True
-            if 'Dropped Class' in student_data['Notes']:
+            if 'Dropped' in student_data['Notes']:
                 student.enrollment_status = Student.DROPPED_COURSE
-            grade_report_data = grade_report_dict.get(student.enrollment_email)
+            if student.edx_email:
+                grade_report_data = grade_report_dict.get(student.edx_email)
+            else:
+                grade_report_data = grade_report_dict.get(student.enrollment_email)
             if grade_report_data:
                 student.edx_id = grade_report_data['Student ID']
                 student.edx_email = grade_report_data['Email']
