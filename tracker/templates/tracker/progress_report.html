@@ -3,7 +3,7 @@
     <h1>Student Progress Report</h1>
     <p>{{ percent_ahead_or_on_pace|floatformat }}% of students on pace to finish the course on time.</p>
     <p>{{ percent_behind|floatformat }}% of students behind schedule to complete course.</p>
-    <p>{{ percent_no_progress|floatformat }}% of students show no progress in the course.</p>
+{#    <p>{{ percent_no_progress|floatformat }}% of students show no progress in the course.</p>#}
     <br><br>
     {% if students_ahead %}
     <h2>Ahead of schedule</h2>
@@ -39,7 +39,7 @@
     <hr>
     <ul>
     {% for student in send_week1_email %}
-    {% url 'welcome_email' student.id as week_one_email_url %}
+    {% url 'week_one_email' student.id as week_one_email_url %}
     {% include 'tracker/_student_email_list.html' with url=week_one_email_url %}
     {% endfor %}
     </ul>

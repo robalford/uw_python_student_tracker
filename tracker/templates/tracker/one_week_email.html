@@ -1,10 +1,10 @@
 {% extends "site_base.html" %}
 {% block body %}
-<h2>Welcome email</h2>
+<h2>Week one email</h2>
 
 <p>Send to: {{ student.enrollment_email }}</p>
 
-<p>Subject: Welcome to the Certificate in Python Programming!</p>
+<p>Subject: Checking in</p>
 
 <p>Dear {{ student }},</p>
 
@@ -29,4 +29,8 @@ Best,
 <br><br>
 Rob Alford
 </p>
+
+<form method="post" action="">{% csrf_token %}
+    <button type="submit" class="btn btn-primary">Email sent</button>
+</form>
 {% endblock %}

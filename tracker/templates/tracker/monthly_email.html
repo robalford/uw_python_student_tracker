@@ -11,7 +11,7 @@
 <p>Dear {{ student }},</p>
 
 <p>
-If you can believe it, {{ month_completed }} month{% if not month_completed == '1' %}s have{% else %} has{% endif %} already gone by
+If you can believe it, over {{ month_completed }} month{% if not month_completed == '1' %}s have{% else %} has{% endif %} already gone by
 since you enrolled in the Python Programming certificate. We want to
 make sure that you are successful in this course. One of the keys to success is pacing yourself through the course
 content, so you have plenty of time to complete your coursework.
@@ -35,4 +35,8 @@ UW Tower, Box 359491
 <br><br>
 4333 Brooklyn Ave NE Seattle, WA
 </p>
+
+<form method="post" action="">{% csrf_token %}
+    <button type="submit" class="btn btn-primary">Email sent</button>
+</form>
 {% endblock %}

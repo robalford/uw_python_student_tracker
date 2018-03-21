@@ -43,14 +43,18 @@ def student_progress_report(request, pk):
     send_month2_email = []
     send_month3_email = []
     for student in all_students:
+        if student.days_since_enrollment > 7 and student in students_no_progress \
+                and not any([student.week1_email_sent,
+                             student.month1_email_sent,
+                             student.month2_email_sent,
+                             student.month3_email_sent]):
+            send_week1_email.append(student)
+        if student.days_since_enrollment >= 30 and not student.month1_email_sent:
+            send_month1_email.append(student)
+        if student.days_since_enrollment > 60 and not student.month2_email_sent:
+            send_month2_email.append(student)
         if student.days_since_enrollment > 90 and not student.month3_email_sent:
             send_month3_email.append(student)
-        elif student.days_since_enrollment > 60 and not student.month2_email_sent:
-            send_month2_email.append(student)
-        elif student.days_since_enrollment >= 30 and not student.month1_email_sent:
-            send_month1_email.append(student)
-        elif student.days_since_enrollment > 7 and student in students_no_progress and not student.month1_email_sent:
-            send_week1_email.append(student)
     context = {
         'students_ahead': students_ahead,
         'students_on_pace': students_on_pace,
@@ -78,12 +82,20 @@ def send_welcome_email(request, student_pk):
 
 def send_one_week_check_in(request, student_pk):
     student = get_object_or_404(Student, pk=student_pk)
+    if request.method == 'POST':
+        student.week1_email_sent = True
+        student.save()
+        return redirect('progress_report', pk=StudentTracker.objects.latest('date_recorded').pk)
     context = {'student': student}
     return render(request, template_name='tracker/one_week_email.html', context=context)
 
 
 def send_monthly_checkin(request, student_pk, month_completed):
     student = get_object_or_404(Student, pk=student_pk)
+    if request.method == 'POST':
+        setattr(student, 'month{}_email_sent'.format(month_completed), True)
+        student.save()
+        return redirect('progress_report', pk=StudentTracker.objects.latest('date_recorded').pk)
     context = {
         'student': student,
         'month_completed': month_completed,

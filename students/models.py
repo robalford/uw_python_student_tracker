@@ -69,11 +69,7 @@ class Student(models.Model):
 
     @property
     def started_lessons(self):
-        return [
-            field for field in self.grade_score_fields()
-            if getattr(self, field) != 'Not Attempted'
-            or getattr(self, field) != '0.0'
-        ]
+        return [field for field in self.grade_score_fields() if getattr(self, field) != 0.0]
 
     @property
     def num_completed_lessons(self):
