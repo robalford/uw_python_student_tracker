@@ -20,23 +20,28 @@ def create_report(request):
     return render(request, template_name='tracker/create_report.html', context=context)
 
 
+def sort_students_by_completed_lessons(students):
+    """Helper to sort by the num_completed_lessons @property"""
+    return sorted(students, key=lambda s: s.num_completed_lessons, reverse=True)
+
+
 def student_progress_report(request, pk):
     student_tracker = get_object_or_404(StudentTracker, pk=pk)
     student_tracker.update_student_progress()
     all_students = Student.objects.filter(enrollment_status=Student.ACTIVE)
-    students_ahead = sorted(all_students.filter(progress_status=Student.AHEAD),
-                            key=lambda s: s.num_completed_lessons, reverse=True)
-    students_on_pace = sorted(all_students.filter(progress_status=Student.ON_PACE),
-                              key=lambda s: s.num_completed_lessons, reverse=True)
-    students_behind = sorted(all_students.filter(progress_status=Student.BEHIND),
-                             key=lambda s: s.num_completed_lessons, reverse=True)
+    # sort students into progress categories
+    students_ahead = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.AHEAD))
+    students_on_pace = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.ON_PACE))
+    students_behind = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.BEHIND))
     students_no_progress = [student for student in all_students if not student.started_lessons]
     student_no_completed_assignments = [student for student in all_students if not student.completed_lessons]
     number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
+    # calculate progress percentiles
     percent_ahead_or_on_pace = ((len(students_ahead) + len(students_on_pace)) / number_active_students) * 100
     percent_behind = (len(students_behind) / number_active_students) * 100
     percent_no_progress = (len(students_no_progress) / number_active_students) * 100
     percent_no_completed = (len(student_no_completed_assignments) / number_active_students) * 100
+    # build lists of students for email check ins
     send_welcome_email = all_students.filter(welcome_email_sent=False)
     send_week1_email = []
     send_month1_email = []

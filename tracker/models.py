@@ -2,6 +2,7 @@ import csv
 import datetime
 from decimal import Decimal
 import io
+from itertools import islice
 
 from django.db import models
 
@@ -47,6 +48,8 @@ class StudentTracker(models.Model):
                 enrollment_date=self.format_date_from_spreadsheet(student_data['Enroll Date']),
                 course_end_date=self.format_date_from_spreadsheet(student_data['Expiration Date'])
             )
+
+            # update email and status booleans based on 'Notes' field in spreadsheet
             if 'Welcome email sent' in student_data['Notes']:
                 student.welcome_email_sent = True
             if 'progress1 email sent' in student_data['Notes']:
@@ -55,32 +58,23 @@ class StudentTracker(models.Model):
                 student.month1_email_sent = True
             if 'Dropped' in student_data['Notes']:
                 student.enrollment_status = Student.DROPPED_COURSE
+
+            # if student uses a different email for edx, use that for grade report lookup
             if student.edx_email:
                 grade_report_data = grade_report_dict.get(student.edx_email)
             else:
                 grade_report_data = grade_report_dict.get(student.enrollment_email)
+
+            # update grade data
             if grade_report_data:
                 student.edx_id = grade_report_data['Student ID']
                 student.edx_email = grade_report_data['Email']
                 student.edx_username = grade_report_data['Username']
-                student.lesson2_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 1: Lesson 2 Assignments'])
-                student.lesson3_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 2: Lesson 3 Assignments'])
-                student.lesson4_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 3: Lesson 4 Assignments'])
-                student.lesson5_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 4: Lesson 5 Assignments'])
-                student.lesson6_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 5: Lesson 6 Assignment'])
-                student.lesson7_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 6: Lesson 7 Assignment'])
-                student.lesson8_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 7: Lesson 8 Assignment'])
-                student.lesson9_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 8: Lesson 9 Assignment'])
-                student.lesson10_score = self.convert_score_to_decimal(
-                    grade_report_data['Assignments 9: Lesson 10 Assignment'])
+                # list of tuples with lesson model fields and lesson keys from grade_report dict for updating grade data
+                lesson_fields_and_assignments = zip(Student.grade_score_fields(),
+                                                    islice(grade_report_data.keys(), 4, 13))
+                for field, assignment in lesson_fields_and_assignments:
+                    setattr(student, field, self.convert_score_to_decimal(grade_report_data[assignment]))
                 student.save()
             # update student progress field
             student.update_progress_status()
