@@ -6,6 +6,8 @@ report CSV can be generated and downloaded via the Data Download panel of the Ed
 
 ## Usage
 
+Clone this repo.
+
 Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 `pyenv`).
 
