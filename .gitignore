@@ -5,3 +5,6 @@ site_media/
 static/dist/
 .DS_Store
 .idea
+
+# Ignore the local Django settings file
+settings.py

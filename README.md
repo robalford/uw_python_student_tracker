@@ -11,6 +11,11 @@ Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 
 Place an updated copy of the SQLite `dev.db` file in the project root directory.
 
+Copy the example settings file and add the course links and email credentials:
+```
+cp student_tracking/settings.py.example student_tracking/settings.py
+```
+Install requirements, load data and run the dev server:
 ```
 pip install -r requirements.txt
 ./manage.py migrate

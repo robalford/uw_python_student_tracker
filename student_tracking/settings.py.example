@@ -1,0 +1,13 @@
+from .settings_base import *
+
+# Course links
+
+COURSE_URL = ''
+LESSON1_URL = ''
+GITHUB_REPO = ''
+SLACK_INVITE = ''
+
+# Course email credentials
+
+USERNAME = ''
+PASSWORD = ''
