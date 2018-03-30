@@ -1,10 +1,10 @@
-# UW Python 210 SP Student Progress Tracking
+# UW Python 210SP Student Progress Tracking
 
 A localhost Django app for tracking student progress and generating check in emails. The Student Tracking
 spreadsheet should be downloaded from the course OneDrive account and converted to CSV format. The grade
 report CSV can be generated and downloaded via the Data Download panel of the EdX learning platform.
 
-## Getting Started
+## Usage
 
 Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 `pyenv`).
@@ -25,8 +25,19 @@ pip install -r requirements.txt
 
 Browse to http://localhost:8000/
 
-Create superuser account to access student data in the Django admin:
+Create superuser account to access student data in the [Django admin](http://localhost:8000/admin):
 
 ```
 ./manage.py createsuperuser
 ```
+Upload the Student Tracking and Grade Report CSV files. 
+
+![Upload files](docs/images/uploads.png)
+
+Generate student progress reports and check in emails.
+
+![Progress report](docs/images/report.png)
+
+![Example email](docs/images/email.png)
+
+
