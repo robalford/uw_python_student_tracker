@@ -13,7 +13,7 @@ def create_report(request):
             student_tracker = student_tracker_form.save()
             return redirect('progress_report', pk=student_tracker.pk)
         else:
-            messages.error(request, 'Please correct the form errors below.')
+            messages.error(request, student_tracker_form.errors)
             return redirect('create_report')
     student_tracker_form = StudentTrackerForm()
     context = {'student_tracker_form': student_tracker_form}
