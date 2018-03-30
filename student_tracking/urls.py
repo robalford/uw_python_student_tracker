@@ -7,7 +7,6 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    # path("", TemplateView.as_view(template_name="homepage.html"), name="home"),
     path("", include("tracker.urls")),
     path("admin/", admin.site.urls),
     path("account/", include("account.urls")),
