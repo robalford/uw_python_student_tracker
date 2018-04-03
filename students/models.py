@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 
 
@@ -77,7 +78,7 @@ class Student(models.Model):
 
     @property
     def percent_assignments_completed(self):
-        return (len(self.completed_lessons) / 9) * 100
+        return (len(self.completed_lessons) / settings.TOTAL_ASSIGNMENTS) * 100
 
     @property
     def days_since_enrollment(self):
@@ -85,12 +86,16 @@ class Student(models.Model):
 
     @property
     def percent_of_enrollment_period_completed(self):
-        return (self.days_since_enrollment / 120) * 100
+        return (self.days_since_enrollment / settings.ENROLLMENT_PERIOD_IN_DAYS) * 100
+
+    AHEAD_OF_PACE_CUTOFF = -5
+    BEHIND_PACE_CUTOFF = 15
 
     def update_progress_status(self):
-        if (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) <= -5:
+        progress_and_enrollment_diff = self.percent_of_enrollment_period_completed - self.percent_assignments_completed
+        if progress_and_enrollment_diff <= Student.AHEAD_OF_PACE_CUTOFF:
             self.progress_status = Student.AHEAD
-        elif 15 >= (self.percent_of_enrollment_period_completed - self.percent_assignments_completed) > -5:
+        elif Student.BEHIND_PACE_CUTOFF >= progress_and_enrollment_diff > Student.AHEAD_OF_PACE_CUTOFF:
             self.progress_status = Student.ON_PACE
         else:
             self.progress_status = Student.BEHIND

@@ -195,3 +195,8 @@ ACCOUNT_USE_AUTH_AUTHENTICATE = True
 AUTHENTICATION_BACKENDS = [
     "account.auth_backends.UsernameAuthenticationBackend",
 ]
+
+# Course-specific constants
+
+ENROLLMENT_PERIOD_IN_DAYS = 120
+TOTAL_ASSIGNMENTS = 9
