@@ -64,6 +64,16 @@ class Student(models.Model):
             'lesson10_score',
         ]
 
+    @classmethod
+    def email_fields(cls):
+        return [
+            'welcome_email_sent',
+            'week1_email_sent',
+            'month1_email_sent',
+            'month2_email_sent',
+            'month3_email_sent',
+        ]
+
     @property
     def completed_lessons(self):
         return [field for field in self.grade_score_fields() if getattr(self, field) == 1.0]
