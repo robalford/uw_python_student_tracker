@@ -56,6 +56,8 @@ class StudentTracker(models.Model):
                 student.week1_email_sent = True
             if '1 month check in' in student_data['Notes']:
                 student.month1_email_sent = True
+            if '2 month check in sent' in student_data['Notes']:
+                student.month2_email_sent = True
             if 'Dropped' in student_data['Notes']:
                 student.enrollment_status = Student.DROPPED_COURSE
 
