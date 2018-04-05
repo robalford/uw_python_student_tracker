@@ -80,7 +80,11 @@ class Student(models.Model):
 
     @property
     def started_lessons(self):
-        return [field for field in self.grade_score_fields() if getattr(self, field) != 0.0]
+        return [
+            field for field in self.grade_score_fields()
+            if getattr(self, field) != 0.0
+            and getattr(self, field) is not None
+        ]
 
     @property
     def num_completed_lessons(self):

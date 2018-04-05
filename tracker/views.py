@@ -33,14 +33,14 @@ def student_progress_report(request, pk):
     students_ahead = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.AHEAD))
     students_on_pace = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.ON_PACE))
     students_behind = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.BEHIND))
+    # separate students with no progress in the course
     students_no_progress = [student for student in all_students if not student.started_lessons]
-    student_no_completed_assignments = [student for student in all_students if not student.completed_lessons]
-    number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
+    students_behind = [student for student in students_behind if student not in students_no_progress]
     # calculate progress percentiles
+    number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
     percent_ahead_or_on_pace = ((len(students_ahead) + len(students_on_pace)) / number_active_students) * 100
     percent_behind = (len(students_behind) / number_active_students) * 100
     percent_no_progress = (len(students_no_progress) / number_active_students) * 100
-    percent_no_completed = (len(student_no_completed_assignments) / number_active_students) * 100
     # build lists of students for email check ins
     send_welcome_email = all_students.filter(welcome_email_sent=False)
     send_week1_email = []
@@ -69,7 +69,6 @@ def student_progress_report(request, pk):
         'percent_ahead_or_on_pace': percent_ahead_or_on_pace,
         'percent_behind': percent_behind,
         'percent_no_progress': percent_no_progress,
-        'percent_no_completed': percent_no_completed,
         'send_welcome_email': send_welcome_email,
         'send_week1_email': send_week1_email,
         'send_month1_email': send_month1_email,
@@ -81,6 +80,10 @@ def student_progress_report(request, pk):
 
 def send_welcome_email(request, student_pk):
     student = get_object_or_404(Student, pk=student_pk)
+    if request.method == 'POST':
+        student.welcome_email_sent = True
+        student.save()
+        return redirect('progress_report', pk=StudentTracker.objects.latest('date_recorded').pk)
     context = {'student': student}
     return render(request, template_name='tracker/welcome_email.html', context=context)
 
