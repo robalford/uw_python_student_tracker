@@ -1,24 +1,24 @@
 {% extends "site_base.html" %}{% load bootstrap3 %}
 {% block body %}
     <h1>Student Progress Report</h1>
-    <p>{{ percent_ahead_or_on_pace|floatformat }}% of students on pace to finish the course on time.</p>
-    <p>{{ percent_behind|floatformat }}% of students behind schedule to complete course.</p>
-    <p>{{ percent_no_progress|floatformat }}% of students show no progress in the course.</p>
+    <p>{{ percent_ahead_or_on_pace|floatformat }}% ({{ num_ahead_or_on_pace }}/{{ number_active_students }}) of students on pace to finish the course on time.</p>
+    <p>{{ percent_behind|floatformat }}% ({{ students_behind|length }}/{{ number_active_students }}) of students behind schedule to complete course.</p>
+    <p>{{ percent_no_progress|floatformat }}% ({{ students_no_progress|length }}/{{ number_active_students }}) of students show no progress in the course.</p>
     <br><br>
     {% if students_ahead %}
-    <h2>Ahead of schedule</h2>
+    <h2>Ahead of schedule ({{ students_ahead|length }})</h2>
     {% include 'tracker/_student_tracking_table.html' with students=students_ahead %}
     {% endif %}
     {% if students_on_pace %}
-    <h2>On pace</h2>
+    <h2>On pace ({{ students_on_pace|length }})</h2>
     {% include 'tracker/_student_tracking_table.html' with students=students_on_pace %}
     {% endif %}
     {% if students_behind %}
-    <h2>Behind</h2>
+    <h2>Behind ({{ students_behind|length }})</h2>
     {% include 'tracker/_student_tracking_table.html' with students=students_behind %}
     {% endif %}
     {% if students_no_progress %}
-    <h2>No progress</h2>
+    <h2>No progress ({{ students_no_progress|length }})</h2>
     {% include 'tracker/_student_tracking_table.html' with students=students_no_progress %}
     {% endif %}
     <br><br>

@@ -29,7 +29,7 @@ class StudentTrackerTestCase(TestCase):
         Student4,Test,teststudent4@email.com,{},{},,,,,,,,
         Student5,Test,teststudent5@email.com,1/25/18,5/27/18,USC,Jane Woo,N/A,"Dropped Class. Welcome email sent, progress1 email sent, no assignments at 1 month check in",,,,
         Student6,Test,teststudent6@email.com,{},{},,,,"Welcome email sent, started course, on pace at 1 month check in",,,,
-        """.format(*tuple(enrollment_dates))
+        """.format(*enrollment_dates)
         student_tracking_csv_data = student_tracking_csv_data.replace('\n        ', '\n').encode('iso-8859-15')
 
         grade_report_csv_data = b"""Student ID,Email,Username,Grade,Assignments 1: Lesson 2 Assignments,Assignments 2: Lesson 3 Assignments,Assignments 3: Lesson 4 Assignments,Assignments 4: Lesson 5 Assignments,Assignments 5: Lesson 6 Assignment,Assignments 6: Lesson 7 Assignment,Assignments 7: Lesson 8 Assignment,Assignments 8: Lesson 9 Assignment,Assignments 9: Lesson 10 Assignment,Assignments (Avg),Enrollment Track,Verification Status,Certificate Eligible,Certificate Delivered,Certificate Type

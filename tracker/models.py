@@ -43,10 +43,10 @@ class StudentTracker(models.Model):
             if not any(student_data.values()):  # skip empty rows
                 continue
             student, _ = Student.objects.get_or_create(
-                name='{} {}'.format(student_data['First Name'], student_data['Last Name']),
-                enrollment_email=student_data['Email Address'],
-                enrollment_date=self.format_date_from_spreadsheet(student_data['Enroll Date']),
-                course_end_date=self.format_date_from_spreadsheet(student_data['Expiration Date'])
+                name='{} {}'.format(student_data['First Name'].strip(), student_data['Last Name'].strip()),
+                enrollment_email=student_data['Email Address'].strip(),
+                enrollment_date=self.format_date_from_spreadsheet(student_data['Enroll Date'].strip()),
+                course_end_date=self.format_date_from_spreadsheet(student_data['Expiration Date'].strip())
             )
 
             # update email and status booleans based on 'Notes' field in spreadsheet

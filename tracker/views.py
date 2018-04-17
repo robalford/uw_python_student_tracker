@@ -38,7 +38,8 @@ def student_progress_report(request, pk):
     students_behind = [student for student in students_behind if student not in students_no_progress]
     # calculate progress percentiles
     number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
-    percent_ahead_or_on_pace = ((len(students_ahead) + len(students_on_pace)) / number_active_students) * 100
+    num_ahead_or_on_pace = len(students_ahead) + len(students_on_pace)
+    percent_ahead_or_on_pace = (num_ahead_or_on_pace / number_active_students) * 100
     percent_behind = (len(students_behind) / number_active_students) * 100
     percent_no_progress = (len(students_no_progress) / number_active_students) * 100
     # build lists of students for email check ins
@@ -66,6 +67,7 @@ def student_progress_report(request, pk):
         'students_behind': students_behind,
         'students_no_progress': students_no_progress,
         'number_active_students': number_active_students,
+        'num_ahead_or_on_pace': num_ahead_or_on_pace,
         'percent_ahead_or_on_pace': percent_ahead_or_on_pace,
         'percent_behind': percent_behind,
         'percent_no_progress': percent_no_progress,
