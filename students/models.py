@@ -13,11 +13,13 @@ class Student(models.Model):
     DROPPED_COURSE = 'D'
     PASSED_COURSE = 'P'
     FAILED_COURSE = 'F'
+    INCOMPLETE = 'I'
     ENROLLMENT_STATUS_CHOICES = (
         (ACTIVE, 'Active'),
         (DROPPED_COURSE, 'Dropped'),
         (PASSED_COURSE, 'Passed course'),
         (FAILED_COURSE, 'Failed course'),
+        (INCOMPLETE, 'Incomplete')
     )
     enrollment_status = models.CharField(max_length=1, choices=ENROLLMENT_STATUS_CHOICES, default=ACTIVE)
     edx_id = models.IntegerField(null=True, blank=True)
