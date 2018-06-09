@@ -49,7 +49,7 @@ class StudentTracker(models.Model):
                 course_end_date=self.format_date_from_spreadsheet(student_data['Expiration Date'].strip())
             )
 
-            # update email and status booleans based on 'Notes' field in spreadsheet
+            # update email booleans based on notes
             if 'Welcome email sent' in student_data['Notes']:
                 student.welcome_email_sent = True
             if 'progress1 email sent' in student_data['Notes']:
@@ -58,8 +58,17 @@ class StudentTracker(models.Model):
                 student.month1_email_sent = True
             if '2 month check in sent' in student_data['Notes']:
                 student.month2_email_sent = True
-            if 'Dropped' in student_data['Notes']:
+
+            # update status (this could be handled more elegantly if you changed the enrollment_status field to use
+            # the actual status codes)
+            if 'Dropped' in student_data['Notes'] or student_data['Date Final Grade Entered'].strip() == 'N/A':
                 student.enrollment_status = Student.DROPPED_COURSE
+            elif student_data['Grade Recorded'].strip() == 'USC':
+                student.enrollment_status = Student.FAILED_COURSE
+            elif student_data['Grade Recorded'].strip() == 'SC':
+                student.enrollment_status = Student.PASSED_COURSE
+            elif student_data['Grade Recorded'].strip() == 'Incomplete':
+                student.enrollment_status = Student.INCOMPLETE
 
             # if student uses a different email for edx, use that for grade report lookup
             if student.edx_email:
