@@ -1,9 +1,15 @@
 {% extends "site_base.html" %}{% load bootstrap3 %}
 {% block body %}
     <h1>Student Progress Report</h1>
+    <h2>Active Students</h2>
     <p>{{ percent_ahead_or_on_pace|floatformat }}% ({{ num_ahead_or_on_pace }}/{{ number_active_students }}) of students on pace to finish the course on time.</p>
     <p>{{ percent_behind|floatformat }}% ({{ students_behind|length }}/{{ number_active_students }}) of students behind schedule to complete course.</p>
     <p>{{ percent_no_progress|floatformat }}% ({{ students_no_progress|length }}/{{ number_active_students }}) of students show no progress in the course.</p>
+    <h2>Inactive Students</h2>
+    <p>{{ percent_passed|floatformat }}% ({{ students_passed|length }}/{{ number_inactive_students }}) of inactive students passed the course.</p>
+    <p>{{ percent_failed|floatformat }}% ({{ students_failed|length }}/{{ number_inactive_students }}) of inactive students failed the course.</p>
+    <p>{{ percent_incomplete|floatformat }}% ({{ students_incomplete|length }}/{{ number_inactive_students }}) of inactive students finished the course with an incomplete.</p>
+    <p>{{ percent_dropped|floatformat }}% ({{ students_dropped|length }}/{{ number_inactive_students }}) of inactive students dropped the course.</p>
     <br><br>
     {% if students_ahead %}
     <h2>Ahead of schedule ({{ students_ahead|length }})</h2>

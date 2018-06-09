@@ -28,27 +28,46 @@ def sort_students_by_completed_lessons(students):
 def student_progress_report(request, pk):
     student_tracker = get_object_or_404(StudentTracker, pk=pk)
     student_tracker.update_student_progress()
-    all_students = Student.objects.filter(enrollment_status=Student.ACTIVE)
+    active_students = Student.objects.filter(enrollment_status=Student.ACTIVE)
     # sort students into progress categories
-    students_ahead = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.AHEAD))
-    students_on_pace = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.ON_PACE))
-    students_behind = sort_students_by_completed_lessons(all_students.filter(progress_status=Student.BEHIND))
+    students_ahead = sort_students_by_completed_lessons(active_students.filter(progress_status=Student.AHEAD))
+    students_on_pace = sort_students_by_completed_lessons(active_students.filter(progress_status=Student.ON_PACE))
+    students_behind = sort_students_by_completed_lessons(active_students.filter(progress_status=Student.BEHIND))
     # separate students with no progress in the course
-    students_no_progress = [student for student in all_students if not student.started_lessons]
+    students_no_progress = [
+        student for student in active_students
+        if not student.started_lessons
+        and student not in students_on_pace
+    ]
     students_behind = [student for student in students_behind if student not in students_no_progress]
     # calculate progress percentiles
-    number_active_students = all_students.filter(enrollment_status=Student.ACTIVE).count()
+    number_active_students = active_students.filter(enrollment_status=Student.ACTIVE).count()
     num_ahead_or_on_pace = len(students_ahead) + len(students_on_pace)
     percent_ahead_or_on_pace = (num_ahead_or_on_pace / number_active_students) * 100
     percent_behind = (len(students_behind) / number_active_students) * 100
     percent_no_progress = (len(students_no_progress) / number_active_students) * 100
+    # build queries for inactive students
+    inactive_students = Student.objects.exclude(enrollment_status=Student.ACTIVE)
+    students_passed = sort_students_by_completed_lessons(
+        inactive_students.filter(enrollment_status=Student.PASSED_COURSE))
+    students_failed = sort_students_by_completed_lessons(
+        inactive_students.filter(enrollment_status=Student.FAILED_COURSE))
+    students_incomplete = sort_students_by_completed_lessons(
+        inactive_students.filter(enrollment_status=Student.INCOMPLETE))
+    students_dropped = sort_students_by_completed_lessons(
+        inactive_students.filter(enrollment_status=Student.DROPPED_COURSE))
+    number_inactive_students = inactive_students.count()
+    percent_passed = (len(students_passed)/number_inactive_students) * 100
+    percent_failed = (len(students_failed)/number_inactive_students) * 100
+    percent_incomplete = (len(students_incomplete)/number_inactive_students) * 100
+    percent_dropped = (len(students_dropped)/number_inactive_students) * 100
     # build lists of students for email check ins
-    send_welcome_email = all_students.filter(welcome_email_sent=False)
+    send_welcome_email = active_students.filter(welcome_email_sent=False)
     send_week1_email = []
     send_month1_email = []
     send_month2_email = []
     send_month3_email = []
-    for student in all_students:
+    for student in active_students:
         if student.days_since_enrollment > 7 and student in students_no_progress \
                 and not any([student.week1_email_sent,
                              student.month1_email_sent,
@@ -71,6 +90,15 @@ def student_progress_report(request, pk):
         'percent_ahead_or_on_pace': percent_ahead_or_on_pace,
         'percent_behind': percent_behind,
         'percent_no_progress': percent_no_progress,
+        'students_passed': students_passed,
+        'students_failed': students_failed,
+        'students_incomplete': students_incomplete,
+        'students_dropped': students_dropped,
+        'number_inactive_students': number_inactive_students,
+        'percent_passed': percent_passed,
+        'percent_failed': percent_failed,
+        'percent_incomplete': percent_incomplete,
+        'percent_dropped': percent_dropped,
         'send_welcome_email': send_welcome_email,
         'send_week1_email': send_week1_email,
         'send_month1_email': send_month1_email,
