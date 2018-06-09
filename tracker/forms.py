@@ -8,8 +8,9 @@ from django.core.exceptions import ValidationError
 from .models import StudentTracker
 
 STUDENT_TRACKING_HEADER = ['Last Name', 'First Name', 'Email Address', 'Enroll Date', 'Expiration Date',
-                           'Grade Recorded', 'Recorded By', 'Date Final Grade Entered', 'Notes', '', '', '',
-                           'edx email']
+                           'Grade Recorded', 'Recorded By', 'Date Final Grade Entered', 'Notes', 'edx email or username',
+                           '', '', '', '', '', '', '',
+                           ]
 
 GRADE_REPORT_HEADER = ['Student ID', 'Email', 'Username', 'Grade', 'Assignments 1: Lesson 2 Assignments',
                        'Assignments 2: Lesson 3 Assignments', 'Assignments 3: Lesson 4 Assignments',
