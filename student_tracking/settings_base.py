@@ -66,9 +66,9 @@ STATIC_ROOT = os.path.join(PACKAGE_ROOT, "site_media", "static")
 STATIC_URL = "/site_media/static/"
 
 # Additional locations of static files
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, "static", "dist"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(PROJECT_ROOT, "static", "dist"),
+# ]
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
